@@ -16,7 +16,7 @@ export default function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/studentlist' element={<StudentList />} /> {/* Changed this route */}
+          <Route path='/studentlist' element={<StudentList />} /> 
           <Route path='/dashboard' element={<Protected Component={Dashboard} />} />
           <Route path='/registration' element={<Protected Component={Registration}  />} />
           <Route path="/logout" element={<Logout />} />

@@ -38,24 +38,6 @@ db.connect((err) => {
 
 
 
-
-
-
-//connection moongoose
-mongoose.connect('mongodb://127.0.0.1:27017/sms')
-
-// Fetch student list from MySQL DB
-app.get('/basicinfo', (req, res) => {
-  const query = 'SELECT * FROM basicinfo';
-
-  connection.query(query, (error, results) => {
-      if (error) {
-          return res.status(500).json({ error: 'Database query failed' });
-      }
-      res.json(results);
-  });
-});
-
 //registration moongose
 app.post('/register', (req,res)=>{
   const {name, password} = req.body;
@@ -72,6 +54,22 @@ app.post('/logout', (req, res) => {
   res.clearCookie('refreshToken');
   res.json({ message: 'Logged out successfully' });
 });
+
+
+// Students List
+app.get('/students', (req, res) => {
+  const query = 'SELECT * FROM basicinfo';
+
+  db.query(query, (error, results) => {
+      if (error) {
+          console.error('Database query error:', error);
+          return res.status(500).json({ error: 'Database query failed' });
+      }
+      res.json(results);
+  });
+});
+
+
 
 
 
