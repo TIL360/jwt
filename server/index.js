@@ -71,6 +71,65 @@ app.get('/students', (req, res) => {
 
 
 
+// Create New Student
+app.post('/studentcreate', async (req, res) => {
+  const { admno, name, standard} = req.body;
+  
+  const sql = 'INSERT INTO basicinfo (adm_no, name, standard) VALUES (?, ?, ?)';
+  db.query(sql, [admno, name, standard], (err, result) => {
+      if (err) {
+          console.error('Error inserting student: ', err);
+          return res.status(500).json({ error: 'Database error' });
+      }
+      res.json({ id: result.insertId, name: name });
+  });
+});
+
+app.get('/students/:id', (req, res) => {
+  const studentId = req.params.id;
+  console.log(`Received request to fetch student with ID: ${studentId}`); // Debug log
+  const sql = 'SELECT * FROM basicinfo WHERE id = ?';
+  
+  // Rest of your code...
+});
+// Update a student by ID
+app.put('/students/:id', (req, res) => {
+  const studentId = req.params.id;
+  const { adm_no, name, standard } = req.body;
+
+  const sql = 'UPDATE basicinfo SET adm_no = ?, name = ?, standard = ? WHERE id = ?';
+  db.query(sql, [adm_no, name, standard, studentId], (err, result) => {
+    if (err) {
+      console.error('Error updating student: ', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'No student found' });
+    }
+    res.status(200).json({ message: 'Student updated successfully' });
+  });
+});
+
+
+
+
+// Delete a student by ID
+app.delete('/students/:id', (req, res) => {
+  const studentId = req.params.id;
+
+  const sql = 'DELETE FROM basicinfo WHERE id = ?';
+  db.query(sql, [studentId], (err, result) => {
+    if (err) {
+      console.error('Error deleting student: ', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'No student found' });
+    }
+    res.status(200).json({ message: 'Student deleted successfully' });
+  });
+});
+
 
 
 // Registration with hashed password

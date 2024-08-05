@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function StudentList() {
   const [students, setStudents] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -18,6 +20,24 @@ export default function StudentList() {
     fetchStudents();
   }, []);
 
+
+const handleclick = (e) => {
+  e.preventDefault()
+  navigate('/studentcreate')
+}
+const handleDelete = async (id) => {
+  try {
+    await axios.delete(`http://localhost:5127/students/${id}`);
+    setStudents(students.filter(student => student.id !== id)); // Update the state to remove the deleted student
+  } catch (error) {
+    console.error("Error deleting student:", error);
+  }
+};
+
+const handleEdit = (id) => {
+  navigate(`/studentedit`); // Navigate to the edit page specific to the student
+};
+
   return (
     <>
       <div className="card">
@@ -26,7 +46,9 @@ export default function StudentList() {
             <div className="col-md-12 text-center">
               <h1>Students Data</h1>
             </div>
-            <div className="col-md-6"></div>
+            <div className="col-md-6">
+              <button className="btn btn-primary" onClick={handleclick}>Add New</button>
+            </div>
           </div>
         </div>
         <div className="card-body">
@@ -49,8 +71,13 @@ export default function StudentList() {
                   <td>{student.standard}</td>
                   <td>
                     {/* Add action buttons here, like edit or delete */}
-                    <button className="btn btn-primary">Edit</button>
-                    <button className="btn btn-danger">Delete</button>
+                    <button className="btn btn-primary" onClick={() => handleEdit(student.id)}>Edit</button>
+                    <button 
+              className="btn btn-danger"
+              onClick={() => handleDelete(student.id)} // Pass the student id to handleDelete
+            >
+              Delete
+            </button>
                   </td>
                 </tr>
               ))}

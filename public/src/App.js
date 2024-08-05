@@ -8,6 +8,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Protected from './components/Protected';
 import StudentList from './components/Students/StudentList';
 import Logout from './components/Logout';
+import StudentCreate from './components/Students/StudentCreate';
+import StudentEdit from './components/Students/StudentEdit';
 
 export default function App() {
   return (
@@ -15,6 +17,8 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/studentedit' element={<StudentEdit />} />
+          <Route path='/studentcreate' element={<StudentCreate />} />
           <Route path='/login' element={<Login />} />
           <Route path='/studentlist' element={<StudentList />} /> 
           <Route path='/dashboard' element={<Protected Component={Dashboard} />} />
