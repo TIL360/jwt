@@ -34,11 +34,11 @@ const Dashboard = () => {
         <li className="nav-item">
           <Link className="nav-link" to="/logout">Logout</Link>
         </li>
-        <li className="nav-item dropdown">
-          <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </Link>
-</li>        </ul>
+        <li className="nav-item">
+          <Link className="nav-link" to="/Studentlist">Students</Link>
+        </li>
+    
+ </ul>
 
 
 

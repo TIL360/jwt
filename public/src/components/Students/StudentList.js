@@ -3,43 +3,60 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function StudentList() {
+  const [message, setMessage] = useState()
+    const navigate = useNavigate()
+    axios.defaults.withCredentials = true;
+    useEffect(() => {
+        axios.get('http://localhost:5127/dashboard')
+        .then(res => {
+            //console.log(res)
+            if(res.data.valid) {
+                setMessage(res.data.message)
+            } else {
+                navigate('/login')
+            }
+        })
+        .catch(err => console.log(err))
+    })
+
+
   const [students, setStudents] = useState([]);
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
         const response = await axios.get('http://localhost:5127/students');
-
-        setStudents(response.data); // assuming the data you need is in response.data
+        setStudents(response.data); // Assuming the data you need is in response.data
       } catch (error) {
-        console.error("Error fetching student data:", error);
+        console.error("Error fetching students:", error);
       }
     };
 
     fetchStudents();
   }, []);
 
+  const handleclick = (e) => {
+    e.preventDefault();
+    navigate('/studentcreate');
+  };
 
-const handleclick = (e) => {
-  e.preventDefault()
-  navigate('/studentcreate')
-}
-const handleDelete = async (id) => {
-  try {
-    await axios.delete(`http://localhost:5127/students/${id}`);
-    setStudents(students.filter(student => student.id !== id)); // Update the state to remove the deleted student
-  } catch (error) {
-    console.error("Error deleting student:", error);
-  }
-};
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5127/students/${id}`);
+      setStudents(students.filter(student => student.id !== id)); // Update the state to remove the deleted student
+    } catch (error) {
+      console.error("Error deleting student:", error);
+    }
+  };
 
-const handleEdit = (id) => {
-  navigate(`/studentedit`); // Navigate to the edit page specific to the student
-};
+  const handleEdit = (id) => {
+    navigate(`/studentedit/${id}`); // Navigate to the edit page specific to the student
+  };
 
   return (
     <>
+    {message}
       <div className="card">
         <div className="card-header">
           <div className="row">
@@ -70,14 +87,13 @@ const handleEdit = (id) => {
                   <td>{student.name}</td>
                   <td>{student.standard}</td>
                   <td>
-                    {/* Add action buttons here, like edit or delete */}
                     <button className="btn btn-primary" onClick={() => handleEdit(student.id)}>Edit</button>
                     <button 
-              className="btn btn-danger"
-              onClick={() => handleDelete(student.id)} // Pass the student id to handleDelete
-            >
-              Delete
-            </button>
+                      className="btn btn-danger"
+                      onClick={() => handleDelete(student.id)} // Pass the student id to handleDelete
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}

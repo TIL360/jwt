@@ -17,10 +17,10 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/studentedit' element={<StudentEdit />} />
-          <Route path='/studentcreate' element={<StudentCreate />} />
+          <Route path="/studentedit/:id" element={<Protected Component={StudentEdit} />} />
+          <Route path='/studentcreate' element={<Protected Component={StudentCreate} />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/studentlist' element={<StudentList />} /> 
+          <Route path='/studentlist' element={<Protected Component={StudentList} />} /> 
           <Route path='/dashboard' element={<Protected Component={Dashboard} />} />
           <Route path='/registration' element={<Protected Component={Registration}  />} />
           <Route path="/logout" element={<Logout />} />

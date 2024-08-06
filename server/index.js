@@ -84,13 +84,20 @@ app.post('/studentcreate', async (req, res) => {
       res.json({ id: result.insertId, name: name });
   });
 });
-
+// Get specific student by ID
 app.get('/students/:id', (req, res) => {
   const studentId = req.params.id;
-  console.log(`Received request to fetch student with ID: ${studentId}`); // Debug log
   const sql = 'SELECT * FROM basicinfo WHERE id = ?';
-  
-  // Rest of your code...
+  db.query(sql, [studentId], (err, results) => {
+    if (err) {
+      console.error('Error fetching student:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'No student found' });
+    }
+    res.json(results[0]); // Send the first result
+  });
 });
 // Update a student by ID
 app.put('/students/:id', (req, res) => {

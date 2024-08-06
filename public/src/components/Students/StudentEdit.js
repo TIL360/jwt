@@ -5,27 +5,19 @@ import { useParams, useNavigate } from 'react-router-dom';
 export default function StudentEdit() {
   const { id } = useParams(); // Get the student id from the URL
   const navigate = useNavigate();
-  const [student, setStudent] = useState({
-    adm_no: '',
-    name: '',
-    standard: '',
-  });
+  const [student, setStudent] = useState({ adm_no: '', name: '', standard: '' });
 
   useEffect(() => {
     const fetchStudent = async () => {
-      console.log(`Fetching student with ID: ${id}`); // Debug log
       try {
         const response = await axios.get(`http://localhost:5127/students/${id}`);
-        console.log(response.data); // Debug log
         setStudent(response.data);
       } catch (error) {
         console.error("Error fetching student data:", error);
       }
     };
-  
     fetchStudent();
-  }, [id]);
-  
+  }, [id]); // Run the effect when the id changes
 
   const handleChange = (e) => {
     const { name, value } = e.target;
